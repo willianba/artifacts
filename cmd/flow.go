@@ -6,7 +6,37 @@ import (
 	"github.com/0xN0x/go-artifactsmmo"
 )
 
-func CopperFlowAction(client *artifactsmmo.ArtifactsMMO, charName string, goal int) {
+type FlowName string
+
+const (
+	CopperFlow FlowName = "copper"
+)
+
+type FlowAction func(client *artifactsmmo.ArtifactsMMO, charName string, goal int)
+
+type Flow struct {
+	Name   FlowName
+	Action FlowAction
+}
+
+var Flows = []Flow{
+	{
+		Name:   CopperFlow,
+		Action: copperFlowAction,
+	},
+}
+
+func GetFlow(name FlowName) FlowAction {
+	for _, flow := range Flows {
+		if flow.Name == name {
+			return flow.Action
+		}
+	}
+
+	return nil
+}
+
+func copperFlowAction(client *artifactsmmo.ArtifactsMMO, charName string, goal int) {
 	var goalFulfilled bool
 	for {
 		if goalFulfilled {

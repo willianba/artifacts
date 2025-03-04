@@ -327,7 +327,7 @@ func createApp() *cli.App {
 
 					switch flow {
 					case "copper":
-						cmd.CopperFlowAction(client, charName, goal)
+						cmd.GetFlow(cmd.CopperFlow)(client, charName, goal)
 						break
 					default:
 						internal.Logger.Error("Unknown flow", "flow", flow)
