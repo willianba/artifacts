@@ -318,21 +318,14 @@ func createApp() *cli.App {
 				Usage:   "Perform a series of actions",
 				Action: func(c *cli.Context) error {
 					client := artifactsmmo.NewClient(apiToken, charName)
-					flow := c.Args().Get(0)
+					flow := cmd.ParseToFlowName(c.Args().Get(0))
 					goal, err := strconv.Atoi(c.Args().Get(1))
 					if err != nil {
 						internal.Logger.Error("Error parsing goal", "err", err)
 						os.Exit(1)
 					}
 
-					switch flow {
-					case "copper":
-						cmd.GetFlow(cmd.CopperFlow)(client, charName, goal)
-						break
-					default:
-						internal.Logger.Error("Unknown flow", "flow", flow)
-						break
-					}
+					cmd.GetFlow(flow)(client, charName, goal)
 
 					return nil
 				},
