@@ -23,7 +23,7 @@ var (
 )
 
 func ParseToFlowName(str string) FlowName {
-	c, _ := flowMap[str]
+	c := flowMap[str]
 	return c
 }
 
