@@ -188,6 +188,32 @@ func createApp() *cli.App {
 							return nil
 						},
 					},
+					{
+						Name:    "use",
+						Aliases: []string{"u"},
+						Usage:   "Use a consumable",
+						Action: func(c *cli.Context) error {
+							client := artifactsmmo.NewClient(apiToken, charName)
+							code := c.Args().Get(0)
+							quantity, _ := strconv.Atoi(c.Args().Get(1))
+							use := cmd.UseConsumableAction(client, code, quantity)
+							internal.Logger.Infof("Used %d %s\n", quantity, use.Item.Name)
+							return nil
+						},
+					},
+					{
+						Name:    "recycle",
+						Aliases: []string{"rc"},
+						Usage:   "Recycle an item",
+						Action: func(c *cli.Context) error {
+							client := artifactsmmo.NewClient(apiToken, charName)
+							code := c.Args().Get(0)
+							quantity, _ := strconv.Atoi(c.Args().Get(1))
+							recycle := cmd.RecycleAction(client, code, quantity)
+							internal.Logger.Infof("Recycled %d %s. Got %d %s", quantity, code, recycle.Details.Items[0].Quantity, recycle.Details.Items[0].Code)
+							return nil
+						},
+					},
 				},
 			},
 			{

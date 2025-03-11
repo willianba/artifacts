@@ -9,7 +9,7 @@ import (
 )
 
 func CharacterInfoAction(client *artifactsmmo.ArtifactsMMO, charName string) *models.Character {
-	info, err := client.GetCharacterInfo(charName)
+	info, err := client.GetCharacter(charName)
 	if err != nil {
 		internal.Logger.Error("Error getting character info", "err", err)
 		os.Exit(1)
@@ -71,8 +71,31 @@ func CraftAction(client *artifactsmmo.ArtifactsMMO, item string, quantity int) *
 	craft, err := client.Craft(item, quantity)
 	if err != nil {
 		internal.Logger.Error("Error crafting", "err", err)
+		os.Exit(1)
 	}
 
 	internal.Cooldown(craft.Cooldown.RemainingSeconds)
 	return craft
+}
+
+func UseConsumableAction(client *artifactsmmo.ArtifactsMMO, item string, quantity int) *models.Consumable {
+	use, err := client.UseConsumable(item, quantity)
+	if err != nil {
+		internal.Logger.Error("Error using consumable", "err", err)
+		os.Exit(1)
+	}
+
+	internal.Cooldown(use.Cooldown.RemainingSeconds)
+	return use
+}
+
+func RecycleAction(client *artifactsmmo.ArtifactsMMO, item string, quantity int) *models.Recycling {
+	recycle, err := client.Recycling(item, quantity)
+	if err != nil {
+		internal.Logger.Error("Error recycling", "err", err)
+		os.Exit(1)
+	}
+
+	internal.Cooldown(recycle.Cooldown.RemainingSeconds)
+	return recycle
 }
