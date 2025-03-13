@@ -168,10 +168,9 @@ func createApp() *cli.App {
 									if fight.Character.Hp <= fight.Character.MaxHp/2 {
 										internal.Logger.Info("Character HP is below 50%, resting...")
 										rest := cmd.RestAction(client)
-										internal.Logger.Info("HP restored", rest.HpRestored)
+										internal.Logger.Info("HP restored", "hp", rest.HpRestored)
 									}
 								}
-
 							}, loops)
 
 							return nil
